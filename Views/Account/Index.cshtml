@@ -1,0 +1,22 @@
+﻿@model BelajarWeb1.Models.LoginResponse
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+
+<div class="text-center">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <label><string>FullName</string> : @Html.DisplayFor(model => model.FullName)</label>
+                <label><string>Email</string> :  @Html.DisplayFor(model => model.Email)</label>
+                <label><string>Role</string> : @Html.DisplayFor(model => model.Role)</label>
+            </div>
+        </div>
+        <a asp-action="ChangePassword" asp-controller="Account">Change Password</a>
+        <a asp-action="Login" asp-controller="Account">Sign Out</a>
+
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@model BelajarWeb1.Models.Department
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Department</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DepartmentName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DepartmentName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.divisionId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.divisionId)
+        </dd>
+        
+    </dl>
+
+    <div class="form-group">
+        <label asp-for="divisionId" class="control-label"></label>
+        <input asp-for="@Model.division.Name" class="form-control" readonly/>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
