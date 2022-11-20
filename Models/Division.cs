@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BelajarWeb1.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace BelajarWeb1.Models
 {
-    public class Division
+    public class Division : BaseModel
 
     {
 

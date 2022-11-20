@@ -281,3 +281,4 @@ D:\MetroData\BelajarWeb\BelajarWeb1\bin\Debug\net6.0\runtimes\unix\lib\net6.0\Sy
 D:\MetroData\BelajarWeb\BelajarWeb1\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\MetroData\BelajarWeb\BelajarWeb1\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\MetroData\BelajarWeb\BelajarWeb1\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\MetroData\BelajarWeb\BelajarWeb1\bin\Debug\net6.0\BCrypt.Net-Core.dll

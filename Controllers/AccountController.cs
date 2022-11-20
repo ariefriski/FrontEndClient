@@ -1,7 +1,10 @@
 ﻿using BelajarWeb1.Context;
+using BelajarWeb1.Handler;
 using BelajarWeb1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
+using System.Runtime.CompilerServices;
 
 namespace BelajarWeb1.Controllers
 {
@@ -16,7 +19,15 @@ namespace BelajarWeb1.Controllers
 
         public IActionResult Index(LoginResponse loginResponse)
         {
-            return View(loginResponse);
+            if (loginResponse.FullName != null)
+            {
+                return View(loginResponse);
+            }
+            else {
+                return RedirectToAction("Login", "Account");
+            }
+                
+            
         }
 
         public IActionResult Register()
@@ -28,14 +39,21 @@ namespace BelajarWeb1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(string fullname, string email, string birthdate, string password)
         {
+            //var data = myContext.Users.Include(x => x.employee).Include(x => x.role)
+            //    .SingleOrDefault(x => x.employee.Email == email);
+
+            if (myContext.Employees.Any(x=>x.Email==email))
+            {
+                return View();
+            }
             Employee employee = new Employee()
             {
                 Fullname = fullname,
                 Email = email,
                 BirthDate = birthdate
             };
-
-            myContext.Employees.Add(employee);
+    
+           myContext.Employees.Add(employee);
             var save = myContext.SaveChanges();
 
             if (save > 0)
@@ -44,7 +62,7 @@ namespace BelajarWeb1.Controllers
                 User user = new User()
                 {
                     employeeId = id,
-                    Password = password,
+                    Password = Hashing.HashPassword(password),
                     roleId = 1
                 };
 
@@ -52,8 +70,7 @@ namespace BelajarWeb1.Controllers
                 var result = myContext.SaveChanges();
 
                 if (result > 1)
-                    return RedirectToAction("Home", "Account");
-
+                    return RedirectToAction("Login", "Account");
 
             }
             return View();
@@ -66,14 +83,14 @@ namespace BelajarWeb1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login(LoginResponse login,string Password)
         {
-            var data = myContext.Users.Include(x => x.employee).Include(x => x.role)
-                .SingleOrDefault(x => x.employee.Email.Equals(email) && x.Password.Equals(password));
-
-            if (data != null)
+            var data = myContext.Users.Include(x => x.employee).Include(x=>x.role)
+                .SingleOrDefault(x => x.employee.Email==login.Email);
+            var vPass = Hashing.ValidatePassword(Password, data.Password);
+            if (data !=null && vPass == true)
             {
-               
+
 
                 LoginResponse loginResponse = new LoginResponse()
                 {
@@ -81,8 +98,18 @@ namespace BelajarWeb1.Controllers
                     Email = data.employee.Email,
                     Role = data.role.Name
                 };
+                HttpContext.Session.SetInt32("Id", data.Id);
+                HttpContext.Session.SetString("Fullname", data.employee.Fullname);
+                HttpContext.Session.SetString("Email", data.employee.Email);
+                HttpContext.Session.SetString("Role", data.role.Name);
 
-                return RedirectToAction("Index", "Account", loginResponse);
+
+
+                return RedirectToAction("Index", "Account",loginResponse);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
             }
             return View();
         }
@@ -130,7 +157,7 @@ namespace BelajarWeb1.Controllers
             var data = myContext.Users.Include(x => x.employee).SingleOrDefault(x => x.employee.Email.Equals(email));
             if (data != null)
             {
-                data.Password = password;
+                data.Password = Hashing.HashPassword(password);
                 myContext.Entry(data).State = EntityState.Modified;
                 var result = myContext.SaveChanges();
                 if (result > 0)
@@ -177,20 +204,20 @@ namespace BelajarWeb1.Controllers
 
 
         [HttpPost]
-        public IActionResult ChangePassword(string OldPassword, User user)
+        public IActionResult ChangePassword(string OldPassword, User user, string email)
         {
-            var data = myContext.Users.FirstOrDefault(x => x.Password.Equals(OldPassword));
-
-            if (data != null)
+           // var hPass = Hashing.HashPassword(OldPassword);
+            var data = myContext.Users.Include(x=>x.employee).FirstOrDefault(x => x.employee.Email.Equals(email));
+            var vPass = Hashing.ValidatePassword(OldPassword, data.Password);
+            if (data != null && vPass == true)
             {
-                if (data.Password == OldPassword)
-                {
-                    data.Password = user.Password;
+               
+                    data.Password = Hashing.HashPassword(user.Password);
                     myContext.Entry(data).State = EntityState.Modified;
                     var result = myContext.SaveChanges();
                     if (result > 0)
                         return RedirectToAction("Login");
-                }
+                
             }
 
             return View();

@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<BelajarWeb1.Models.Department>
 
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@*<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -39,3 +40,137 @@
 }
     </tbody>
 </table>
+*@
+
+@*<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <h6>Division table</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0" id="table_id">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nama</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>
+                                <th class="text-secondary opacity-7"></th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <p class="text-xs font-weight-bold mb-0">Manager</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h6 class="mb-0 text-sm">John Michael</h6>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    <button type="button" class="btn btn-primary">Edit</button>
+                                    <button type="button" class="btn btn-danger">Hapus</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>*@
+
+<div class="block-content">
+    <button type="button" class="btn btn-success mr-5 mb-5" data-toggle="modal" data-target="#insertModal">
+        <i class="fa fa-plus mr-5"></i>Add Data
+    </button>
+    <table id="table_department" class="table table-vcenter">
+        <thead>
+            <tr>
+                <th class="d-none d-sm-table-cell">Id</th>
+                <th class="d-none d-sm-table-cell">Nama</th>
+                <th class="d-none d-sm-table-cell">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal EDIT-->
+<div class="modal fade" id="editModalDepartment" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table  class="table table-vcenter">
+                    <button type="button" class="btn btn-primary" id="editBtnDepartment">
+                        <i class="si si-pencil mr-5"></i>Edit
+                    </button>
+                    <thead>
+                        <tr>
+                            <th class="d-none d-sm-table-cell">Id</th>
+                            <th class="d-none d-sm-table-cell">Nama</th>
+                            <th class="d-none d-sm-table-cell">DivisionID</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_modal_edit_dept">
+                      
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveEditDepartment" hidden>Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*insert modal*@
+<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="#myForm">
+                <div class="col-md-9">
+                    <div class="form-material floating">
+                            <input type="hidden" class="form-control" id="IdDep" name="IdDep" value="0">
+                        <input type="text" class="form-control" id="departmentName" name="departmentName">
+                        <label for="material-text2">Department Name</label>
+                    </div>
+                    <div class="form-material floating">
+                        <input type="text" class="form-control" id="divisionId" name="divisionId">
+                        <label for="material-password2">division Id</label>
+                    </div>
+                </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="insertBtnDepartment">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+

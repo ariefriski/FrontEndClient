@@ -1,6 +1,6 @@
 ﻿using BelajarWeb1.Context;
 using BelajarWeb1.Models;
-using BelajarWeb1.Services;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,8 +22,22 @@ namespace BelajarWeb1.Controllers
 
         public IActionResult Index()
         {
+            //var Role = HttpContext.Session.GetString("Role");
+            //if(Role == "Admin")
+            //{
+            //    var data = myContext.Divisions.ToList();
+                
+            //    return View(data);
+            //}else if(Role == null)
+            //{
+            //    return RedirectToAction("UnAuthorized", "ErrorPage");
+            //}
+            
+            //    return RedirectToAction("Forbidden", "ErrorPage");
             var data = myContext.Divisions.ToList();
+
             return View(data);
+
         }
 
         //GET BY ID
@@ -44,6 +58,8 @@ namespace BelajarWeb1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Division division)
         {
+            division.CreatedBy = HttpContext.Session.GetString("Fullname");
+            division.CreatedDate = DateTime.Now.ToLocalTime();
             myContext.Divisions.Add(division);
             var result = myContext.SaveChanges();
             if (result > 0)

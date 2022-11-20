@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Ke0/qQSUe2WMR9olSpCgtPbg5066mnWVqT9iCAYHjjeVl00ngD15f6GeU16RkuvFM+WDWwBfx47/wC+GW0I1Vg==",
+  "dgSpecHash": "hgQjea6iBeIFqKrZpFihvV0BV5iwnQIgExEQ4kyAP79oGEAMhhQchdtIMxnHE7BZ6da7vKKVL/j3+zVtLrz0mw==",
   "success": true,
   "projectFilePath": "D:\\MetroData\\BelajarWeb\\BelajarWeb1\\BelajarWeb1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\arief\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\arief\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\arief\\.nuget\\packages\\bcrypt.net-core\\1.6.0\\bcrypt.net-core.1.6.0.nupkg.sha512",
     "C:\\Users\\arief\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\arief\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\arief\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",
