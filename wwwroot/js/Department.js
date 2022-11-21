@@ -8,7 +8,7 @@
            "headers": {
            'Content-Type': 'application/x-www-form-urlencoded'},
             "type": "GET",
-   },
+        },
    columns: [
        {
            data: 'Id',
@@ -27,9 +27,46 @@
            }
        }
 
-    ]
+        ],
+        dom: "Bfrtip",
+        buttons: [
+            {
+                extend: "pdf",
+                exportOptions: {
+                    columns:[0,1]
+                }
+            },
+            {
+                extend: "csv",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            {
+                extend: "excel",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            {
+                extend: "print",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            {
+                extend: "copy",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            "colvis"
 
-   });
+        ]
+
+    });
+    
+
 });
 
 function GetDetailDepartment(Id) {
@@ -55,20 +92,47 @@ function GetDetailDepartment(Id) {
 }
 
 function DeleteDepartment(Id) {
-    var hapus = confirm("Yakin ingin menghapus ?");
-    if (hapus) {
-        $.ajax({
-            url: `https://localhost:44332/api/Department/${Id}`,
-            type: "DELETE", // <- Change here
-            contentType: "application/json",
-            success: function () {
-                alert("Data dihapus");
-                location.reload();
-            },
-            error: function () {
-            }
-        });
-    }
+    var urll = Id;
+    return new Swal({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this imaginary file!',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `https://localhost:44332/api/Department/${urll}`,
+                type: "DELETE", // <- Change here
+                contentType: "application/json",
+                success: function (data) {
+                    return new swal({
+                        title: 'Success!',
+                        type: 'success',
+                        timer: '1500'
+                    }).then(function () {
+                        location.reload();
+                    });
+
+                },
+                error: function () {
+                    swal({
+                        title: 'Oops...',
+                        type: 'error',
+                        timer: '1500'
+                    })
+                }
+            });
+
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal(
+                'Cancelled',
+                'Your imaginary file is safe :)',
+                'error'
+            )
+        }
+    })
 }
 
 $(document).ready(function () {
@@ -87,15 +151,17 @@ $(document).ready(function () {
                 data: JSON.stringify(data),
                 //cache: false,
                 success: function () {
-                    alert("Data dibuat");
-                    location.reload();
+                    return new swal({
+                        title: "Good job!",
+                        text: "Data di buat !",
+                        icon: "success",
+                        button: "Oke",
+                    }).then(function () {
+                        location.reload();
+                    });
                 }, error: function () {
                 }
             });
-            //alert(typeof(IdDep));
-            //alert(IdDep);
-            //alert(Name);
-            //alert(DivisionId);
         }
         else {
             alert('Please fill all the field !');
@@ -131,15 +197,17 @@ function editDataDept(id) {
             data: JSON.stringify(data),
             //cache: false,
             success: function () {
-                alert("Data Diupdate");
-                location.reload();
+                return new swal({
+                    title: "Good job!",
+                    text: "Data Berhasil di Edit !",
+                    icon: "success",
+                    button: "Oke",
+                }).then(function () {
+                    location.reload();
+                });
             }, error: function () {
             }
         });
-        //alert(typeof(IdDep));
-        //alert(IdDep);
-        //alert(Name);
-        //alert(DivisionId);
     }
     else {
         alert('Please fill all the field !');
@@ -153,3 +221,16 @@ function editDataDept(id) {
 //        "render": function (data, type, row, meta) {
 //            return `<button type="button" class="btn btn-primary">Edit</button>
 //                        <button type="button" class="btn btn-danger">Hapus</button>`;
+//$.ajax({
+//    url: `https://localhost:44332/api/Department/${urll}`,
+//    type: "DELETE", // <- Change here
+//    contentType: "application/json",
+//    success: function () {
+//        swal("Poof! Your imaginary file has been deleted!", {
+//            icon: "success",
+//        });
+
+//    },
+//    error: function () {
+//    }
+//});
