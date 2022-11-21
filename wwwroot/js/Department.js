@@ -81,11 +81,24 @@ function GetDetailDepartment(Id) {
                           <input type="hidden" class="form-control" id="hiddenId" readonly placeholder="" value="0">
                           <td><input type="text" class="form-control" id="deptId" readonly placeholder="${res.Data.Id}" value="${res.Data.Id}"></td>
                           <td><input type="text" id="deptName" class="form-control" readonly placeholder="${res.Data.Name}" value="${res.Data.Name}"></td>
-                          <td><input type="text" id="divId" class="form-control" readonly placeholder="${res.Data.DivisionId}" value="${res.Data.DivisionId}"></td>
+                          <td><select class="form-control" id="DivisionNameDetail" name="material-select2" disabled></select></td>
                           </tr>`;
-        //console.log(res);
-        //console.log(res.Data);
+        $.ajax({
+            url: `https://localhost:44332/api/Division/${res.Data.DivisionId}`,
+            type: "GET"
+        }).done((rest) => {
+            let divisionName = "";
+
+            divisionName += `<option value="${rest.Data.Id}">${rest.Data.Name}</option>`
+
+
+
+            $("#DivisionNameDetail").html(divisionName);
+        })
+
+
         $("#table_modal_edit_dept").html(temp);
+
         }).fail((err) => {
             console.log(err);
         });
@@ -135,12 +148,25 @@ function DeleteDepartment(Id) {
     })
 }
 
+
+$.ajax({
+    url: 'https://localhost:44332/api/Division',
+}).done((res) => {
+    let divisions = "";
+    $.each(res.data, function (key, val) {
+        divisions += `<option value="${val.Id}">${val.Name}</option>`
+    });
+
+    $("#DivisionName").html(divisions);
+});
+
+
 $(document).ready(function () {
     $('#insertBtnDepartment').on('click', function () {
       //  $("#insertBtn").attr("disabled", "disabled");
         var IdDep = parseInt($('#IdDep').val());
         var Name = $('#departmentName').val();
-        var DivisionId = parseInt($('#divisionId').val());
+        var DivisionId = parseInt($('#DivisionName').val());
         var data = { IdDep, Name, DivisionId };
         if (Name != "" && DivisionId!= "") {
             $.ajax({
@@ -171,11 +197,28 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('#editBtnDepartment').on('click', function () {
-        var id = parseInt($('#deptId').val());
         $('#deptName').removeAttr('readonly', 'readonly');
         $('#divId').removeAttr('readonly', 'readonly');
+        $('#DivisionNameDetail').attr('disabled', false);
         $('#saveEditDepartment').removeAttr('hidden');
-        $('#saveEditDepartment').attr('onclick', `editDataDept(${id})`);
+        $("#DivisionNameDetail").empty();
+        $.ajax({
+            url: 'https://localhost:44332/api/Division',
+        }).done((res) => {
+
+            let divisions = "";
+            $.each(res.data, function (key, val) {
+                divisions += `<option value="${val.Id}">${val.Name}</option>`
+            });
+
+            $("#DivisionNameDetail").html(divisions);
+
+        })
+        
+        var idDept = parseInt($('#deptId').val());
+
+        $('#saveEditDepartment').attr('onclick', `editDataDept(${idDept})`);
+       
     });
 
 
@@ -183,14 +226,15 @@ $(document).ready(function () {
 
 });
 
-function editDataDept(id) {
+function editDataDept(idDept) {
+    var idDiv = $('#DivisionNameDetail').val();
     var Id = parseInt($('#hiddenId').val());
     var Name = $('#deptName').val();
-    var DivisionId = parseInt($('#divId').val());
+    var DivisionId = idDiv;
     var data = {Id,Name, DivisionId };
     if (Name != "" && DivisionId != "") {
         $.ajax({
-            url: `https://localhost:44332/api/Department/update/${id}`,
+            url: `https://localhost:44332/api/Department/update/${idDept}`,
             type: "PUT",
             contentType: "application/json",
             dataTpe: "json",
