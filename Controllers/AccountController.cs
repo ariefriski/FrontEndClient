@@ -35,6 +35,11 @@ namespace BelajarWeb1.Controllers
             return View();
         }
 
+        public IActionResult Buat()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(string fullname, string email, string birthdate, string password)
@@ -81,38 +86,38 @@ namespace BelajarWeb1.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginResponse login,string Password)
-        {
-            var data = myContext.Users.Include(x => x.employee).Include(x=>x.role)
-                .SingleOrDefault(x => x.employee.Email==login.Email);
-            var vPass = Hashing.ValidatePassword(Password, data.Password);
-            if (data !=null && vPass == true)
-            {
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Login(LoginResponse login,string Password)
+        //{
+        //    var data = myContext.Users.Include(x => x.employee).Include(x=>x.role)
+        //        .SingleOrDefault(x => x.employee.Email==login.Email);
+        //    var vPass = Hashing.ValidatePassword(Password, data.Password);
+        //    if (data !=null && vPass == true)
+        //    {
 
 
-                LoginResponse loginResponse = new LoginResponse()
-                {
-                    FullName = data.employee.Fullname,
-                    Email = data.employee.Email,
-                    Role = data.role.Name
-                };
-                HttpContext.Session.SetInt32("Id", data.Id);
-                HttpContext.Session.SetString("Fullname", data.employee.Fullname);
-                HttpContext.Session.SetString("Email", data.employee.Email);
-                HttpContext.Session.SetString("Role", data.role.Name);
+        //        LoginResponse loginResponse = new LoginResponse()
+        //        {
+        //            FullName = data.employee.Fullname,
+        //            Email = data.employee.Email,
+        //            Role = data.role.Name
+        //        };
+        //        HttpContext.Session.SetInt32("Id", data.Id);
+        //        HttpContext.Session.SetString("Fullname", data.employee.Fullname);
+        //        HttpContext.Session.SetString("Email", data.employee.Email);
+        //        HttpContext.Session.SetString("Role", data.role.Name);
 
 
 
-                return RedirectToAction("Index", "Account",loginResponse);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            return View();
-        }
+        //        return RedirectToAction("Index", "Account",loginResponse);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //    return View();
+        //}
 
         public IActionResult ResetPassword()
         {

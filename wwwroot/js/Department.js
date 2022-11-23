@@ -1,69 +1,109 @@
-﻿$(document).ready(function(){
+﻿function format(d) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+        '<tr>' +
+        '<td>Division Id:</td>' +
+        '<td>' + d.DivisionId + '</td>' +
+        '</tr>' +
+        '</table>';
+}
 
-    $('#table_department').DataTable({
+$(document).ready(function () {
 
-     ajax: {
-           url: 'https://localhost:44332/api/Department',
-           dataSrc: 'data',
-           "headers": {
-           'Content-Type': 'application/x-www-form-urlencoded'},
-            "type": "GET",
-        },
-   columns: [
-       {
-           data: 'Id',
-           className: "d-none d-sm-table-cell",
-       },   
-       {
-           data: 'Name',
-           className: "d-none d-sm-table-cell",
-       },
-       {
-           data: null,
-           className:"d-none d-sm-table-cell",
-           "render": function (data, type, row, meta) {
-               return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModalDepartment" onclick="GetDetailDepartment('${data.Id}')">Edit</button>
-                        <button type="button" class="btn btn-danger" onclick="DeleteDepartment('${data.Id}')">Hapus</button>`;
-           }
-       }
+    var table = $('#table_department').DataTable({
 
+        ajax: 'https://localhost:44332/api/Department',
+        columns: [
+            {
+                className: 'dt-control',
+                orderable: false,
+                data: null,
+                defaultContent: '',
+            },
+            { data: 'Id' },
+            { data: 'Name' },
         ],
-        dom: "Bfrtip",
-        buttons: [
-            {
-                extend: "pdf",
-                exportOptions: {
-                    columns:[0,1]
-                }
-            },
-            {
-                extend: "csv",
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            {
-                extend: "excel",
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            {
-                extend: "print",
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            {
-                extend: "copy",
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            "colvis"
+        order: [[1, 'asc']],
 
-        ]
+   //  ajax: {
+   //        url: 'https://localhost:44332/api/Department',
+   //        dataSrc: 'data',
+   //        "headers": {
+   //        'Content-Type': 'application/x-www-form-urlencoded'},
+   //         "type": "GET",
+   //     },
+   //columns: [
+   //    {
+   //        data: 'Id',
+   //        className: "dt-control",
+   //    },   
+   //    {
+   //        data: 'Name',
+   //        className: "d-none d-sm-table-cell",
+   //    },
+   //    {
+   //        data: null,
+   //        className:"d-none d-sm-table-cell",
+   //        "render": function (data, type, row, meta) {
+   //            return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModalDepartment" onclick="GetDetailDepartment('${data.Id}')">Edit</button>
+   //                     <button type="button" class="btn btn-danger" onclick="DeleteDepartment('${data.Id}')">Hapus</button>`;
+   //        }
+   //    }
 
+   //     ],
+   //     dom: "Bfrtip",
+   //     buttons: [
+   //         {
+   //             extend: "pdf",
+   //             exportOptions: {
+   //                 columns:[0,1]
+   //             }
+   //         },
+   //         {
+   //             extend: "csv",
+   //             exportOptions: {
+   //                 columns: [0, 1]
+   //             }
+   //         },
+   //         {
+   //             extend: "excel",
+   //             exportOptions: {
+   //                 columns: [0, 1]
+   //             }
+   //         },
+   //         {
+   //             extend: "print",
+   //             exportOptions: {
+   //                 columns: [0, 1]
+   //             }
+   //         },
+   //         {
+   //             extend: "copy",
+   //             exportOptions: {
+   //                 columns: [0, 1]
+   //             }
+   //         },
+   //         "colvis"
+
+   //     ]
+
+    });
+
+    $('#table_department tbody').on('click', 'td.dt-control', function () {
+
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                // Open this row
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+        
     });
     
 
@@ -258,6 +298,111 @@ function editDataDept(idDept) {
         console.log(id);
     }
 }
+
+$.ajax({
+    url: `https://localhost:44332/api/Department/`,
+    type: "GET"
+}).done((rest) => {
+    let divisionId = [];
+    $.each(rest.data, function (key, val) {
+        divisionId.push(val.DivisionId);
+    });
+    $.ajax({
+        url: `https://localhost:44332/api/Division/`,
+        type: "GET"
+    }).done((res) => {
+        let divisionName = [];
+        $.each(res.data, function (key, val) {
+            divisionName.push(val.Name);
+        });
+        const counts = {};
+        const sampleArray = divisionId;
+        sampleArray.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+        console.log(counts);
+        let Cseries = [];
+        for (const key in counts) {
+            
+            Cseries.push(counts[key]);
+        }
+
+
+        var options = {
+            series: Cseries,
+            chart: {
+                width: 380,
+                type: 'pie',
+            },
+            labels: divisionName,
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+
+        var options2 = {
+            series: [{
+                data: Cseries
+            }],
+            chart: {
+                height: 350,
+                type: 'bar',
+                events: {
+                    click: function (chart, w, e) {
+                        // console.log(chart, w, e)
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '45%',
+                    distributed: true,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            legend: {
+                show: false
+            },
+            xaxis: {
+                categories: divisionName,
+                labels: {
+                    style: {
+                        fontSize: '12px'
+                    }
+                }
+            }
+        };
+
+
+
+
+
+
+        var hist = new ApexCharts(document.querySelector("#hist"), options2);
+        hist.render();
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    })
+    
+
+    //console.log(rest);
+    //console.log(divisionId);
+}).fail((err) => {
+    console.log(err);
+})
+
+
+
 
 //https://localhost:44332/api/Department/2
 //data: null,
