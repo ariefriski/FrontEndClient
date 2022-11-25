@@ -15,10 +15,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\MetroData\BelajarWeb\BelajarWeb1
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/MetroData/BelajarWeb/BelajarWeb1/Views/Account/Buat.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxCdWF0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/MetroData/BelajarWeb/BelajarWeb1/Views/Account/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -29,6 +25,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/MetroData/BelajarWeb/BelajarWeb1/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MetroData/BelajarWeb/BelajarWeb1/Views/Account/Masuk.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxNYXN1ay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MetroData/BelajarWeb/BelajarWeb1/Views/Account/NewPassword.cshtml]

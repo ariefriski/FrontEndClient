@@ -41,7 +41,7 @@ namespace BelajarWeb1.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      //  [ValidateAntiForgeryToken]
         public IActionResult Register(string fullname, string email, string birthdate, string password)
         {
             //var data = myContext.Users.Include(x => x.employee).Include(x => x.role)
@@ -82,6 +82,11 @@ namespace BelajarWeb1.Controllers
         }
 
         public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Masuk()
         {
             return View();
         }

@@ -1,9 +1,22 @@
 ﻿function format(d) {
     // `d` is the original data object for the row
+    
+    $.ajax({
+        url: `https://localhost:44332/api/Division/${d.DivisionId}`,
+        type: "GET"
+    }).done((res) => {
+        var Nama = res.Data.Name;
+        $("#namadivisi").html(Nama);
+    })
+
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
         '<tr>' +
         '<td>Division Id:</td>' +
         '<td>' + d.DivisionId + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Division Name:</td>' +
+        '<td id="namadivisi"></td>' +
         '</tr>' +
         '</table>';
 }
@@ -22,8 +35,50 @@ $(document).ready(function () {
             },
             { data: 'Id' },
             { data: 'Name' },
+            {
+                data: null,
+                "render": function (data, type, row, meta) {
+                    return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModalDepartment" onclick="GetDetailDepartment('${data.Id}')">Edit</button>
+                            <button type="button" class="btn btn-danger" onclick="DeleteDepartment('${data.Id}')">Hapus</button>`;
+                }
+            }
         ],
         order: [[1, 'asc']],
+        dom: "Bfrtip",
+        buttons: [
+            {
+                extend: "pdf",
+                exportOptions: {
+                    columns:[0,1]
+                }
+            },
+            {
+                extend: "csv",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            {
+                extend: "excel",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            {
+                extend: "print",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            {
+                extend: "copy",
+                exportOptions: {
+                    columns: [0, 1]
+                }
+            },
+            "colvis"
+
+        ]
 
    //  ajax: {
    //        url: 'https://localhost:44332/api/Department',
